@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{subject}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+        }
+        .logo {
+            max-width: 120px;
+        }
+        .title {
+            font-size: 22px;
+            color: #333;
+            font-weight: bold;
+        }
+        .content {
+            font-size: 16px;
+            color: #333333;
+            line-height: 1.6;
+            text-align: left;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #777777;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            margin-top: 15px;
+            font-size: 16px;
+            color: #ffffff;
+            background: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img src="https://yourcompany.com/logo.png" alt="MediPulse Logo" class="logo">
+        <h2 class="title">{{subject}}</h2>
+    </div>
+
+    <div class="content">
+        <p>Hello <strong>{{to}}</strong>,</p>
+        <p>{{content}}</p>
+        
+        {{#if buttonText}}
+        <p style="text-align: center;">
+            <a href="{{buttonLink}}" class="btn">{{buttonText}}</a>
+        </p>
+        {{/if}}
+        
+        <p>Thank you for choosing <strong>MediPulse</strong>.</p>
+
+        <p>Best Regards,</p>
+        <p><strong>The MediPulse Team</strong></p>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2025 MediPulse. All rights reserved.</p>
+        <p>Need help? <a href="https://medipulse.com/support">Contact Support</a></p>
+    </div>
+</div>
+
+</body>
+</html>
