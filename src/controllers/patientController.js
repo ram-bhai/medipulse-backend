@@ -1,5 +1,12 @@
 const patientService = require('../services/patientService');
 const { HTTP_STATUS_CODES, HTTP_STATUS_MESSAGES } = require('../constants/httpstatus');
+const {
+    updateProfileSchema,
+    uploadMedicalRecordSchema,
+    bookAppointmentSchema,
+    contactSupportSchema,
+    aiSymptomCheckerSchema
+} = require('../utils/validations/patientValidation');
 
 exports.getProfile = async (req, res) => {
     try {
@@ -12,6 +19,7 @@ exports.getProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
     try {
+        updateProfileSchema.parse(req.body);
         const updatedPatient = await patientService.updatePatientProfile(req.user.id, req.body, req.file ? req.file.path : null);
         res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, updatedPatient });
     } catch (error) {
@@ -26,6 +34,7 @@ exports.uploadMedicalRecord = async (req, res) => {
         }
         
         const fileUrls = req.files.map(file => file.path);
+        uploadMedicalRecordSchema.parse({ medicalRecords: fileUrls });
         const record = await patientService.uploadMedicalRecord(req.user.id, fileUrls);
         res.status(HTTP_STATUS_CODES.SUCCESS.CREATED).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.CREATED, record });
     } catch (error) {
@@ -35,6 +44,7 @@ exports.uploadMedicalRecord = async (req, res) => {
 
 exports.bookAppointment = async (req, res) => {
     try {
+        bookAppointmentSchema.parse(req.body);
         const appointment = await patientService.bookAppointment(req.user.id, req.body);
         res.status(HTTP_STATUS_CODES.SUCCESS.CREATED).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.CREATED, appointment });
     } catch (error) {
@@ -53,6 +63,7 @@ exports.deleteAccount = async (req, res) => {
 
 exports.contactSupport = async (req, res) => {
     try {
+        contactSupportSchema.parse(req.body);
         await patientService.contactSupport(req.user.id, req.body.message);
         res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK });
     } catch (error) {
@@ -107,6 +118,7 @@ exports.deleteMedicalRecord = async (req, res) => {
 
 exports.aiSymptomChecker = async (req, res) => {
     try {
+        aiSymptomCheckerSchema.parse(req.body);
         const analysis = await patientService.aiSymptomChecker(req.body.symptoms);
         res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, analysis });
     } catch (error) {

@@ -1,8 +1,23 @@
 const authService = require('../services/authService');
+const { z } = require('zod');
 const { HTTP_STATUS_CODES, HTTP_STATUS_MESSAGES } = require('../constants/httpstatus');
+
+const authSchema = z.object({
+    name: z.string().min(3).max(50).optional(),
+    email: z.string().email(),
+    password: z.string().min(6),
+    phone: z.string().min(10).max(15).optional(),
+    role: z.enum(["admin", "doctor", "patient", "staff"]).optional(),
+    phone: z.string().min(10).max(12).optional(),
+    age: z.number().min(1).max(100).optional(),
+    gender: z.enum(["male", "female", "other"]).optional(),
+    otp: z.string().length(6).optional(),
+    newPassword: z.string().min(6).optional(),
+});
 
 exports.register = async (req, res) => {
     try {
+        authSchema.pick({ name: true, email: true, password: true, phone: true, role: true }).parse(req.body);
         const user = await authService.registerUser(req.body);
         res.status(HTTP_STATUS_CODES.SUCCESS.CREATED).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.CREATED, user });
     } catch (error) {
@@ -12,6 +27,7 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
+        authSchema.pick({ email: true, password: true }).parse(req.body);
         const { token, user } = await authService.loginUser(req.body);
         res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, token, user });
     } catch (error) {
@@ -30,6 +46,7 @@ exports.getProfile = async (req, res) => {
 
 exports.forgotPassword = async (req, res) => {
     try {
+        authSchema.pick({ email: true }).parse(req.body);
         await authService.forgotPassword(req.body.email);
         res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK });
     } catch (error) {
@@ -39,6 +56,7 @@ exports.forgotPassword = async (req, res) => {
 
 exports.resetPassword = async (req, res) => {
     try {
+        authSchema.pick({ email: true, otp: true, newPassword: true }).parse(req.body);
         await authService.resetPassword(req.body.email, req.body.otp, req.body.newPassword);
         res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK });
     } catch (error) {

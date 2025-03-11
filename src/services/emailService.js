@@ -43,10 +43,10 @@ exports.sendEmail = async (to, subject, content, buttonText = null, buttonLink =
             html: htmlContent,
         });
 
-        console.log('✅ Email sent successfully:', response);
+        console.log('Email sent successfully:', response);
         return response;
     } catch (error) {
-        console.error('❌ Error sending email:', error);
+        console.error('Error sending email:', error);
         throw new Error('Email sending failed');
     }
 };
