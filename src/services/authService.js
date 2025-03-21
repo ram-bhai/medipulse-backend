@@ -75,7 +75,9 @@ exports.resetPassword = async (email, otp, newPassword) => {
     await emailService.sendEmail(
         email,
         'Password Reset Successful',
-        'Your password has been reset successfully. If this was not you, please contact support immediately.'
+        'Your password has been reset successfully. If this was not you, please contact support immediately.',
+        'Help & Support',
+        `${process.env.FRONTEND_URL}/support`
     );
 };
 

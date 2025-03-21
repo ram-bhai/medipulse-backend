@@ -13,35 +13,35 @@ const UserSchema = new mongoose.Schema({
     phone: { type: String, required: true, unique: true },
     isActive: { type: Boolean, default: true },
     profilePicture: { type: String, default: null },
+    age: { type: Number },
+    gender: { type: String, enum: ['male', 'female', 'other'] },
 
-    // ✅ Doctor-Specific Fields
+    // Doctor-Specific Fields
     doctorProfile: {
         specialty: { type: String },
         licenseNumber: { type: String },
         availableSlots: [{ type: Date }],
     },
 
-    // ✅ Patient-Specific Fields
+    // Patient-Specific Fields
     patientProfile: {
-        age: { type: Number },
-        gender: { type: String, enum: ['male', 'female', 'other'] },
         medicalRecords: [{ type: mongoose.Schema.Types.ObjectId, ref: 'MedicalRecord' }],
         appointments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Appointment' }],
         subscription: { type: mongoose.Schema.Types.ObjectId, ref: 'Subscription', default: null },
     },
 
-    // ✅ Staff/Admin-Specific Fields
+    // Staff/Admin-Specific Fields
     staffProfile: {
         department: { type: String },
     },
 
-    // ✅ Common Security & Authentication Fields
+    // Common Security & Authentication Fields
     otp: { type: String },
     otpExpires: { type: Date },
     fcmToken: { type: String },
 }, { timestamps: true });
 
-// ✅ Exclude fields based on user role before returning the document
+// Exclude fields based on user role before returning the document
 UserSchema.methods.toJSON = function () {
     const user = this.toObject();
     

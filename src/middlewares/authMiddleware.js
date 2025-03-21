@@ -18,7 +18,7 @@ exports.authenticate = async (req, res, next) => {
     }
 };
 
-// ✅ Role-Based Authorization Middleware
+// Role-Based Authorization Middleware
 exports.authorizeRoles = (...roles) => {
     return (req, res, next) => {
         if (!req.user || !roles.includes(req.user.role)) {

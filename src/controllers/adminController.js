@@ -17,27 +17,27 @@ exports.createAdmin = async (req, res) => {
     try {
         createAdminSchema.parse(req.body);
         const admin = await adminService.createAdmin(req.body);
-        res.status(201).json({ message: "Admin created successfully", admin });
+        res.status(HTTP_STATUS_CODES.SUCCESS.CREATED).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.CREATED, admin });
     } catch (error) {
-        res.status(400).json({ message: error.errors || error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await adminService.getAllUsers();
-        res.status(200).json({ message: "All users fetched successfully", users });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, users });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
 exports.getDashboardStats = async (req, res) => {
     try {
         const stats = await adminService.getDashboardStats();
-        res.status(200).json({ message: "Dashboard stats fetched successfully", stats });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, stats });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
@@ -49,18 +49,18 @@ exports.assignRole = async (req, res) => {
         roleSchema.parse(req.body);
         
         const result = await adminService.assignRole(req.params.userId, req.body.role);
-        res.status(200).json({ message: "Role assigned successfully", result });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, result });
     } catch (error) {
-        res.status(400).json({ message: error.errors || error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
 exports.getAllRoles = async (req, res) => {
     try {
         const roles = await adminService.getAllRoles();
-        res.status(200).json({ message: "Roles fetched successfully", roles });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, roles });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
@@ -75,36 +75,36 @@ exports.updateUser = async (req, res) => {
         updateUserSchema.parse(req.body);
         
         const updatedUser = await adminService.updateUser(req.params.userId, req.body);
-        res.status(200).json({ message: "User updated successfully", updatedUser });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, updatedUser });
     } catch (error) {
-        res.status(400).json({ message: error.errors || error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
 exports.deleteUser = async (req, res) => {
     try {
         await adminService.deleteUser(req.params.userId);
-        res.status(200).json({ message: "User deleted successfully" });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
 exports.toggleUserStatus = async (req, res) => {
     try {
         const updatedUser = await adminService.toggleUserStatus(req.params.userId);
-        res.status(200).json({ message: "User status updated successfully", updatedUser });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, updatedUser });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
 exports.getAdminProfile = async (req, res) => {
     try {
         const admin = await adminService.getAdminProfile(req.user.id);
-        res.status(200).json({ message: "Admin profile fetched successfully", admin });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, admin });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
@@ -118,27 +118,27 @@ exports.updateAdminProfile = async (req, res) => {
         updateProfileSchema.parse(req.body);
 
         const updatedAdmin = await adminService.updateAdminProfile(req.user.id, req.body);
-        res.status(200).json({ message: "Admin profile updated successfully", updatedAdmin });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, updatedAdmin });
     } catch (error) {
-        res.status(400).json({ message: error.errors || error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
 exports.getAllAppointments = async (req, res) => {
     try {
         const appointments = await adminService.getAllAppointments();
-        res.status(200).json({ message: "Appointments fetched successfully", appointments });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, appointments });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
 exports.deleteAppointment = async (req, res) => {
     try {
         await adminService.deleteAppointment(req.params.appointmentId);
-        res.status(200).json({ message: "Appointment deleted successfully" });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
@@ -147,34 +147,33 @@ exports.rescheduleAppointment = async (req, res) => {
         rescheduleSchema.parse(req.body); // Validate request body
         const updatedAppointment = await adminService.rescheduleAppointment(req.params.appointmentId, req.body.newDate);
         
-        // 📧 Notify patient & doctor via email
+        // Notify patient & doctor via email
         await emailService.sendEmail(
             updatedAppointment.patient.email,
             "Appointment Rescheduled",
             `Your appointment with Dr. ${updatedAppointment.doctor.name} has been rescheduled to ${req.body.newDate}.`
         );
-
-        res.status(200).json({ message: "Appointment rescheduled successfully", updatedAppointment });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, updatedAppointment });
     } catch (error) {
-        res.status(400).json({ message: error.errors || error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
 exports.getAllTransactions = async (req, res) => {
     try {
         const transactions = await adminService.getAllTransactions();
-        res.status(200).json({ message: "Transactions fetched successfully", transactions });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, transactions });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
 exports.getTransactionDetails = async (req, res) => {
     try {
         const transaction = await adminService.getTransactionDetails(req.params.transactionId);
-        res.status(200).json({ message: "Transaction details fetched successfully", transaction });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, transaction });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
@@ -185,16 +184,15 @@ exports.refundPayment = async (req, res) => {
         
         const refundResponse = await adminService.refundPayment(req.params.transactionId);
         
-        // 📧 Notify user about refund
+        // Notify user about refund
         await emailService.sendEmail(
             refundResponse.user.email,
             "Refund Processed",
             `Your refund of $${refundResponse.amount} has been processed successfully.`
         );
-
-        res.status(200).json({ message: "Payment refunded successfully", refundResponse });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, refundResponse });
     } catch (error) {
-        res.status(400).json({ message: error.errors || error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
@@ -202,17 +200,17 @@ exports.generateReport = async (req, res) => {
     try {
         await otpService.verifyOTP(req.user.email, req.body.otp); // Secure report generation with OTP
         const report = await adminService.generateReport();
-        res.status(200).json({ message: "Report generated successfully", report });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, report });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };
 
 exports.getActivityLogs = async (req, res) => {
     try {
         const logs = await adminService.getActivityLogs();
-        res.status(200).json({ message: "Activity logs fetched successfully", logs });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, logs });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({  message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
 };

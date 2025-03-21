@@ -2,7 +2,6 @@ const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("../config/cloudinaryConfig");
 
-// ✅ Cloudinary Storage Configuration
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {
@@ -18,6 +17,5 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage });
 
-// Export Middleware for Single & Multiple Uploads
-exports.uploadSingle = upload.single("profilePicture"); // Expects `profilePicture`
-exports.uploadMultiple = upload.array("medicalRecords", 10); // Expects `medicalRecords`
+exports.uploadSingle = upload.single("profilePicture"); 
+exports.uploadMultiple = upload.array("medicalRecords", 10);

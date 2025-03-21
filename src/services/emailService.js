@@ -1,9 +1,9 @@
-const { Resend } = require('resend');
+// const { Resend } = require('resend');
+const nodemailer = require("nodemailer"); 
 const fs = require('fs');
 const path = require('path');
-require('dotenv').config();
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Load email template dynamically
 const loadEmailTemplate = () => {
@@ -21,6 +21,15 @@ const fillTemplate = (template, data) => {
     return template.replace(/{{(.*?)}}/g, (match, key) => data[key.trim()] || '');
 };
 
+const transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
+});
+
 // Send email function
 exports.sendEmail = async (to, subject, content, buttonText = null, buttonLink = null) => {
     try {
@@ -36,15 +45,20 @@ exports.sendEmail = async (to, subject, content, buttonText = null, buttonLink =
 
         const htmlContent = fillTemplate(emailTemplate, dynamicData);
 
-        const response = await resend.emails.send({
-            from: process.env.EMAIL_FROM,
+        // const response = await resend.emails.send({
+        //     from: process.env.EMAIL_FROM,
+        //     to: [to],
+        //     subject,
+        //     html: htmlContent,
+        // });
+        const mailOptions = {
+            from: `"MediPulse" <no-reply@medipulse.com>`,
             to: [to],
             subject,
             html: htmlContent,
-        });
-
-        console.log('Email sent successfully:', response);
-        return response;
+        };
+        const info = await transporter.sendMail(mailOptions);
+        return mailOptions;
     } catch (error) {
         console.error('Error sending email:', error);
         throw new Error('Email sending failed');

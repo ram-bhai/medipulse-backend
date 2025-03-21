@@ -4,26 +4,26 @@ const MedicalRecord = require("../models/medicalRecordModel");
 const Transaction = require("../models/transactionModel");
 const pushService = require("./pushService");
 
-// ✅ Get Doctor Profile
+// Get Doctor Profile
 exports.getProfile = async (doctorId) => {
     const doctor = await User.findById(doctorId).select("-password");
     if (!doctor || doctor.role !== "doctor") throw new Error("Doctor not found");
     return doctor;
 };
 
-// ✅ Update Doctor Profile
+// Update Doctor Profile
 exports.updateProfile = async (doctorId, updateData) => {
     const doctor = await User.findByIdAndUpdate(doctorId, updateData, { new: true }).select("-password");
     if (!doctor) throw new Error("Doctor not found");
     return doctor;
 };
 
-// ✅ Get All Appointments for Doctor
+// Get All Appointments for Doctor
 exports.getAppointments = async (doctorId) => {
     return await Appointment.find({ doctor: doctorId }).populate("patient", "name email phone");
 };
 
-// ✅ Update Appointment Status (Confirm/Cancel)
+// Update Appointment Status (Confirm/Cancel)
 exports.updateAppointmentStatus = async ({ appointmentId, status }) => {
     const appointment = await Appointment.findById(appointmentId);
     if (!appointment) throw new Error("Appointment not found");
@@ -31,25 +31,25 @@ exports.updateAppointmentStatus = async ({ appointmentId, status }) => {
     appointment.status = status;
     await appointment.save();
 
-    // ✅ Send Notification to Patient
+    // Send Notification to Patient
     await pushService.sendNotification(appointment.patient, "Appointment Update", `Your appointment has been ${status}`);
 
     return appointment;
 };
 
-// ✅ Get Patients Assigned to Doctor
+// Get Patients Assigned to Doctor
 exports.getPatients = async (doctorId) => {
     return await User.find({ role: "patient", appointments: { $exists: true, $ne: [] } }).select("name email phone");
 };
 
-// ✅ Get Patient Details
+// Get Patient Details
 exports.getPatientDetails = async (patientId) => {
     const patient = await User.findById(patientId).select("-password");
     if (!patient || patient.role !== "patient") throw new Error("Patient not found");
     return patient;
 };
 
-// ✅ Set Doctor Availability
+// Set Doctor Availability
 exports.setAvailability = async (doctorId, availableSlots) => {
     const doctor = await User.findById(doctorId);
     if (!doctor) throw new Error("Doctor not found");
@@ -60,19 +60,19 @@ exports.setAvailability = async (doctorId, availableSlots) => {
     return doctor.availableSlots;
 };
 
-// ✅ Get Doctor Availability
+// Get Doctor Availability
 exports.getAvailability = async (doctorId) => {
     const doctor = await User.findById(doctorId);
     if (!doctor) throw new Error("Doctor not found");
     return doctor.availableSlots;
 };
 
-// ✅ Get Medical Records (Uploaded by Doctor)
+// Get Medical Records (Uploaded by Doctor)
 exports.getMedicalRecords = async (doctorId) => {
     return await MedicalRecord.find({ doctor: doctorId }).populate("patient", "name email");
 };
 
-// ✅ Upload Medical Report for a Patient
+// Upload Medical Report for a Patient
 exports.uploadReport = async (doctorId, file) => {
     if (!file || !file.path) throw new Error("Invalid file upload");
 
@@ -85,7 +85,7 @@ exports.uploadReport = async (doctorId, file) => {
     return medicalRecord;
 };
 
-// ✅ Get Doctor Transactions (Payments & Earnings)
+// Get Doctor Transactions (Payments & Earnings)
 exports.getTransactions = async (doctorId) => {
     return await Transaction.find({ doctor: doctorId }).sort({ createdAt: -1 });
 };
