@@ -10,8 +10,9 @@ exports.registerUser = async (userData) => {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) throw new Error('User already exists');
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await User.create({ name, email, password, role, age, phone, gender, fcmToken });
+    const user = await User.create({ name, email, password: hashedPassword, role, age, phone, gender, fcmToken });
 
     // Send welcome email after successful registration
     await emailService.sendEmail(
@@ -74,7 +75,9 @@ exports.resetPassword = async (email, otp, newPassword) => {
     await emailService.sendEmail(
         email,
         'Password Reset Successful',
-        'Your password has been reset successfully. If this was not you, please contact support immediately.'
+        'Your password has been reset successfully. If this was not you, please contact support immediately.',
+        'Help & Support',
+        `${process.env.FRONTEND_URL}/support`
     );
 };
 

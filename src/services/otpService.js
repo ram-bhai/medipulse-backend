@@ -6,8 +6,8 @@ exports.generateOTP = async (email) => {
     if (!user) throw new Error('User not found');
 
     const otp = crypto.randomInt(100000, 999999).toString();
-    user.resetOTP = otp;
-    user.otpExpiry = Date.now() + 10 * 60 * 1000; // 10 min expiry
+    user.otp = otp;
+    user.otpExpies = Date.now() + 10 * 60 * 1000; // 10 min expiry
     await user.save();
 
     return otp;
@@ -15,11 +15,11 @@ exports.generateOTP = async (email) => {
 
 exports.verifyOTP = async (email, otp) => {
     const user = await User.findOne({ email });
-    if (!user || user.resetOTP !== otp || Date.now() > user.otpExpiry) {
+    if (!user || user.otp !== otp || Date.now() > user.otpExpires) {
         throw new Error('Invalid or expired OTP');
     }
 
-    user.resetOTP = undefined;
-    user.otpExpiry = undefined;
+    user.otp = undefined;
+    user.otpExpires = undefined;
     await user.save();
 };

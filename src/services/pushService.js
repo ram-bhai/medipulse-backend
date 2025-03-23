@@ -1,11 +1,4 @@
-// src/services/pushService.js
-const admin = require('firebase-admin');
-
-if (!admin.apps.length) {
-    admin.initializeApp({
-        credential: admin.credential.cert(require('../config/firebaseServiceAccount.json')),
-    });
-}
+const admin = require('../config/firebaseConfig');
 
 exports.sendNotification = async (userId, title, body) => {
     const payload = {
