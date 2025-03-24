@@ -19,7 +19,7 @@ exports.register = async (req, res) => {
     try {
         authSchema.pick({ name: true, email: true, password: true, phone: true, role: true }).parse(req.body);
         const user = await authService.registerUser(req.body);
-        res.status(HTTP_STATUS_CODES.SUCCESS.CREATED).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.CREATED, user });
+        res.status(HTTP_STATUS_CODES.SUCCESS.CREATED).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.CREATED, data: user });
     } catch (error) {
         res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({ message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
@@ -29,7 +29,7 @@ exports.login = async (req, res) => {
     try {
         authSchema.pick({ email: true, password: true }).parse(req.body);
         const { token, user } = await authService.loginUser(req.body);
-        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, token, user });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, token, data: user });
     } catch (error) {
         res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({ message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
@@ -38,7 +38,7 @@ exports.login = async (req, res) => {
 exports.getProfile = async (req, res) => {
     try {
         const user = await authService.getUserProfile(req.user.id);
-        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, user });
+        res.status(HTTP_STATUS_CODES.SUCCESS.OK).json({ message: HTTP_STATUS_MESSAGES.SUCCESS.OK, data: user });
     } catch (error) {
         res.status(HTTP_STATUS_CODES.CLIENT_ERROR.BAD_REQUEST).json({ message: HTTP_STATUS_MESSAGES.CLIENT_ERROR.BAD_REQUEST, error: error.message });
     }
